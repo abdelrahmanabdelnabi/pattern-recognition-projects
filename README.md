@@ -4,7 +4,7 @@ This repository contains my solutions to the HWs and assignments of CC474 Patter
 The [course webpage](https://sites.google.com/view/ssp-pr-torki/home) has the lectures, HWs, and assignments.
 
 ## Assignments
-***
+
 ### Face Recognition
 - Facial recognition on the ORL faces database
 - Implemented PCA and LDA
@@ -40,8 +40,9 @@ Deep learning for modulation scheme recognition and classification on a syntheti
 - Analysed the effect of encoding the spatial layout
 - Compared results of different values of K using F1 score
 
-## HWs
 ***
+
+## HWs
 1. Principal Component Analysis (PCA)
     - implementation of PCA for dimensionality reduction.
     - consine similarity, euclidean distance, and analysis of expalained variance.
