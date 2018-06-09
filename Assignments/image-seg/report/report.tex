@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{physics}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\usepackage{amsmath,amsfonts,graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+%\usepackage[
+%backend=biber,
+%style=alphabetic,
+%sorting=ynt
+%]{biblatex}
+ 
+%\addbibresource{refs.bib}
+
+\begin{document}
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness here
+		
+		\center % Centre everything on the page
+		
+		%------------------------------------------------
+		%	Headings
+		%------------------------------------------------
+		
+		\textsc{\LARGE Faculty of Engineering - Alexandria University}\\[1.5cm] % Main heading such as the name of your university/college
+		
+		\textsc{\Large Pattern Recognition}\\[0.5cm] % Major heading such as course name
+		
+
+		\HRule\\[0.4cm]
+		
+		{\huge\bfseries Image Segmentation}\\[0.4cm] % Title of your document
+		
+		\HRule\\[1.5cm]
+		
+		%------------------------------------------------
+		%	Author(s)
+		%------------------------------------------------
+		
+		\begin{minipage}{0.5\textwidth}
+			\begin{flushleft}
+				\large
+				Abdelrahman Mohamed Abdelnabi
+				\texttt{3466} \\
+				Ahmed Essam Shaheen
+				\texttt{3321} \\
+				Amr Mohamed El Sayed
+				\texttt{3400} \\
+			\end{flushleft}
+		\end{minipage}
+		~
+		\begin{minipage}{0.3\textwidth}
+			\begin{flushright}
+				\large
+				\textit{Supervisor}\\
+				Dr. Marwan \textsc{Torki} % Supervisor's name
+			\end{flushright}
+		\end{minipage}
+
+
+		\vfill\vfill\vfill % Position the date 3/4 down the remaining page
+		
+		{\large\today} % Date, change the \today to a set date if you want to be precise
+		
+		\vfill % Push the date up 1/4 of the remaining page
+		
+	\end{titlepage}
+	
+	
+	\section{Introduction}
+	Image segmentation can be performed by unsupervised clustering algorithms. Clustering is a form of unsupervised learning because it can perdict labels of datapoints without the need of having true labels at training time. K-means is a simple clusternig algorithm that is very good in clustering spherical data. Spectral clustering clusters data by modeling the similarity of points as a graph and tranforms the clustering problem to a minimum (or normalized) cut problem on the similarity graph. Similarity graphs can be k-NN graphs, rbf kernel similarity or, euclidean distance similarity.
+	
+	
+	\section{Spectral Clustering with Normalized Cut}
+	Pixel pairwise similarity is very expensive in memory. Images of size 321x481 have 154000 pixels. Computing the pixel pairwise similarity for such image requires a matrix of size $154000^2$ which is roughly 88.8 GBs!
+	
+	However, by noting that the k-NN graph of an image this size is very sparse. Each row in the matrix of k-NN graph have only k entries of 1's in it compared to the row size of 154000. We can use scipy's sparse matrices to be able to store the similarity matrix in memory and perform eigenvalue decomposition on its normalized Laplacian.
+	
+	The eigenvalue decomposition is very expensive and may not converge in some cases.
+	
+	We use scipy's sparse solver to perform eigenvalue decomposition. The solver has a few handy parameters. One is \texttt{k}, the number of eigenvalues/eigenvectors required, and \texttt{which}, whether the largest magnitude, largest algebraic, smallest magnitude, or smallest algebraic eigenvalues/eigenvectors required. We need the smallest eigenvalues, so we try getting the smallest magnitude eigenvalues but the solver takes a very long time and may not converge so we tried the smallest algebraic eigenvalues and it worked.
+	
+	For each image, we construct the K-NN graph for its pixels. The K-NN graph is represented with an adjacency matrix, where \texttt{matrix[i][j]} is 1 iff \textit{j} is in the KNN of \textit{i}, otherwise it is 0. However, this matrix is asymmetric because the KNN similarity between two nodes is asymmetric. To make the matrix symmetric, we take its average between itself and its transpose \cite{sklearnspectral}.
+	
+	
+	\section{Encoding Spatial Layout}
+	Previously, the pixels given to the clustering algorithm only had 3 components, red, green, and blue. The algorithm clustering the pixels based on their color components only, which means pixels with similar colors can easily end up in the same cluster even if they are too far in the actual image.
+	
+	To encode the information abou the pixel layout, we add two extra components to each pixel, its x and y cooridnates in the actual image. This was the pixel similarity is also affected by the position of each pixel not just its color components.
+	
+	
+%	\printbibliography
+	
+\end{document}
