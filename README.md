@@ -1,7 +1,7 @@
 # Pattern Recognition Course HWs and Assigments
 This repository contains my solutions to the HWs and assignments of CC474 Pattern Recognition Spring 2018 at Alexandria University.
 
-The [course webpage](https://sites.google.com/view/ssp-pr-torki/home) has the lectures, HWs, and assignments.
+The [course webpage](https://sites.google.com/view/ssp-pr-torki/copy-spring-2018) has the lectures, HWs, and assignments.
 
 ## Assignments
 
